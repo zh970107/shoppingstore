@@ -13,31 +13,48 @@
 %>
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <base href="<%=basePath%>">
     <meta charset="UTF-8">
-    <title>sHover|感应鼠标进出方向悬浮效果</title>
+    <title>商品页</title>
     <script src="<%=basePath%>resource/js/sHover.min.js"></script>
     <link rel="stylesheet" href="<%=basePath%>resource/css/example.css">
 
 </head>
 <body id="body">
 
-    <div id="part3" class="part">
-        <div class="container">
-            <div id="item1" class="sHoverItem">
-                <img id="img1" src="resource/images/1.jpg">
-                <span id="intro1" class="sIntro">
-					<h2>Flowers</h2>
-					<p>Flowers are so inconsistent! But I was too young to know how to love her</p>
-					<button>立即购买</button>
-					<button>加入购物车</button>
-				</span>
+    <div id="part3" class="part" style="height: 100%;">
+        <div class="container" >
+
             </div>
         </div><!-- /container -->
     </div><!-- /part3 -->
-
 <script>
     window.onload=function(){
+
+        $.ajax({
+            url:"selectAllProducts",
+            type:"post",
+            data:{
+                "p_type":getQueryString("p_type"),
+            },
+            success:function(data){
+                   for(var i = 0; i <data.length;i++){
+                       var str = " <div class='sHoverItem'>" +
+                           "<img id='item'"+(i+2)+"'src="+data[i].pic+">" +
+                           "<span id='intro''"+(i+2)+"' class='sIntro'>" +
+                           "<h2>"+data[i].pName+"</h2>" +
+                           "<p>"+data[i].intro+"</p>" +
+                           "<p>$"+data[i].price+"</p>" +
+                           "<button>立即购买</button>" +
+                           "<button>加入购物车</button>" +
+                           "</span>" +
+                           "</div>"
+                    $(".container").append(str);
+                   }
+            }
+        })
+
         var b=new sHover('head','headIntro');
         var a=new sHover("sHoverItem","sIntro");
         a.set({
@@ -81,6 +98,13 @@
         }else{
             return document.body.clientHeight;
         }
+    }
+    function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)
+            return  decodeURI(r[2]);
+        return null;
     }
 </script>
 

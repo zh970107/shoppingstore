@@ -276,7 +276,7 @@
     </div>
 </div>
 
-<iframe src="<%=basePath%>resource/shop/showprowducts.jsp" id="myframe"></iframe>
+<iframe id="myframe"></iframe>
 
 <img src="<%=basePath%>resource/images/top.png" id="topImg">
 
@@ -288,13 +288,12 @@
             url:"selectAllP_type",
             type:"post",
             success:function(data){
-                for (var i=data.length-1;i>0;i--){
+                for (var i=0;i<data.length;i++){
                     // language=HTML
                     var str = " <div class='future_ui__piece'> <span><a ><font color ='white' size='7'>"+data[i]+"</font></a></span>" +
                         "                <div class='line'></div>" +
                         "                <div class='tip'></div>" +
                         "       </div>";
-
                     $(".pieces").prepend(str);
                 }
             }
@@ -302,9 +301,13 @@
 
         $(".pieces").on("click",".future_ui__piece",function(){
             /*alert($(this).children().children().children().text());*/
+            var type = $(this).children().children().children().text();
+            $("#myframe").attr("src","<%=basePath%>resource/shop/showprowducts.jsp?p_type="+type);
+
             $(".intro").hide();
             $("#myframe").show();
             $("#topImg").show();
+
         })
 
         $("#topImg").click(function(){

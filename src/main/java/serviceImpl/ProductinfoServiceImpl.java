@@ -1,7 +1,6 @@
 package serviceImpl;
 
 import entity.Productinfo;
-import entity.Userinfo;
 import mapper.ProductinfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,11 @@ public class ProductinfoServiceImpl implements ProductinfoService {
     @Override
     public List<String> selectAllP_type() {
         return pim.selectAllP_type();
+    }
+
+    @Override
+    public List<Productinfo> selectAllProductsByP_type(String p_type) {
+        return pim.selectAllProductsByP_type(p_type);
     }
 
     @Override
