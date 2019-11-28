@@ -94,6 +94,7 @@
     }
     function windowHeight(){
         if(document.documentElement){
+
             return document.documentElement.clientHeight;
         }else{
             return document.body.clientHeight;
