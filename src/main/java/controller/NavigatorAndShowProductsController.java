@@ -21,6 +21,9 @@ public class NavigatorAndShowProductsController {
         System.out.println("ssss");
         System.out.println("ssss");
         System.out.println("ssss");
+        System.out.println("ssss");
+        System.out.println("ssss");
+        System.out.println("ssss");
         return psi.selectAllP_type();
     }
 }
