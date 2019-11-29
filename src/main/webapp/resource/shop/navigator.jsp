@@ -302,7 +302,7 @@
         $(".pieces").on("click",".future_ui__piece",function(){
             /*alert($(this).children().children().children().text());*/
             var type = $(this).children().children().children().text();
-            $("#myframe").attr("src","<%=basePath%>resource/shop/showprowducts.jsp?p_type="+type);
+            $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);
 
             $(".intro").hide();
             $("#myframe").show();
