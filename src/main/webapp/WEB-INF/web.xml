@@ -33,7 +33,9 @@
 
     <init-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:springmvc.xml</param-value>
+      <param-value>classpath:springmvc.xml,
+                   classpath:spring-redis.xml
+      </param-value>
     </init-param>
   </servlet>
   <servlet-mapping>

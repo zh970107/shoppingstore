@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import serviceImpl.UserServiceImpl;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,19 +20,30 @@ public class LoginAndRegisterController {
     @Autowired
     UserServiceImpl usi;
 
+
     @RequestMapping("login")
-    public String login(@RequestParam String username, @RequestParam String password, @RequestParam String flag, HttpServletRequest request){
+    public String login(@RequestParam String username, @RequestParam String password, @RequestParam String flag, HttpServletRequest request, HttpServletResponse resp){
         Userinfo ui = usi.selectByUsername(username);
         if(ui == null){
             return "none";
         }else{
             if(DigestUtils.md5Hex(password.getBytes()).equals(ui.getPassword())){
+                Cookie cookie = new Cookie("username",username);
+                Cookie cookie1 = new Cookie("password",password);
+                cookie.setMaxAge(50000);
+                cookie1.setMaxAge(50000);
+
                 if(flag.equals("yes")){
-                    ui.setPassword(password);
-                    request.getSession().setAttribute("info",ui);
+                    Cookie cookie3 = new Cookie("flag","no");
+                    cookie3.setMaxAge(50000);
+                    resp.addCookie(cookie3);
                 }else{
-                    request.getSession().removeAttribute("info");
+                    Cookie cookie4 = new Cookie("flag","yes");
+                    cookie4.setMaxAge(50000);
+                    resp.addCookie(cookie4);
                 }
+                resp.addCookie(cookie);
+                resp.addCookie(cookie1);
                 return "yes";
             }else{
                 return "no";

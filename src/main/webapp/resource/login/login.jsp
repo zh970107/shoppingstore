@@ -18,76 +18,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   #msg,#msg2{
     color: white;
   }
-
-
 </style>
-
-
-
 </head>
-
 <body>
 <h1>登录注册</h1>
 <div class="container w3layouts agileits">
   <div class="login w3layouts agileits">
     <h2>登 录</h2>
-   
       <input type="text"      id="username1"  placeholder="用户名" >
       <input type="password"  id="password1" placeholder="密码"   >
-    
     <ul class="tick w3layouts agileits">
       <li>
         <input type="checkbox" id="brand1" value="" >
         <label for="brand1"><span></span>记住我</label>
       </li>
     </ul>
-	
     <div class="send-button w3layouts agileits">    
         <input type="button" value="登 录" id="btnLogin">
            <div id="msg"></div>
     </div>
-
     <a href="<%=path%>/resource/login/forgetPwd.jsp" target="_blank">忘记密码?</a>
-
   </div>
-  
   <div class="register w3layouts agileits" id="registerDiv">
     <h2>注 册</h2>
       <input type="text"       id="username2"         placeholder="用户名"   >
       <input type="password"   id="password2"     placeholder="密码"     >
       <input type="text"       id="email"        placeholder="邮箱"     >
-
     <div class="send-button w3layouts agileits">
         <input type="button" value="免费注册" id="btnRegister">
         <div id="msg2"></div>
-    
     </div>
-	 
-	 
     <div class="clear"></div>
-	
   </div>
-  
   <div class="clear"></div>
 </div>
-
 <div class="footer w3layouts agileits">
   <p>Copyright &copy; More Templates</p>
 </div>
-
 <input type="hidden" value="<%=basePath%>" id="hidd">
-
 <script type="text/javascript">
-
   $(function(){
-    var username = "${sessionScope.info.username}";
-    var password = "${sessionScope.info.password}";
+    var username = "${cookie.username.value }";
+    var password = "${cookie.password.value }";
+    var usernames = "${cookie.flag.value}"
 
-//记住密码后从session中获取用户名或密码,填充到页面里
-    $("#username1").val(username);
-    $("#password1").val(password);
-
-    if($("#username1").val()!=''&&$("#password1").val()!=''){
+    if(usernames=='no'){
+      //记住密码后从cookie中获取用户名或密码,填充到页面里
+      $("#username1").val(username);
+      $("#password1").val(password);
       $("input[type='checkbox']").attr("checked","checked");
     }else{
       $("input[type='checkbox']").removeAttr("checked");
@@ -110,11 +88,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             "flag":flag
           },
           success:function(data){
-
             if(data=="none"){
               $("#msg").html("用户不存在")
             }else if(data=="yes"){
               //跳转页面
+              location.href="<%=basePath%>resource/shop/navigator.jsp";
               $("#msg").html("成功")
             }else{
               $("#msg").html("用户名或密码错误")
@@ -125,7 +103,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         $("#msg").html("用户名或密码为空")
       }
     })
-
     $("#btnRegister").click(function(){
       if($("#username2").val()!=''&&$("#password2").val()!=''&&$("#email").val!=''){
         $.ajax({
@@ -153,10 +130,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       }
     })
   })
-
 </script>
-
 </body>
-
-
 </html>
