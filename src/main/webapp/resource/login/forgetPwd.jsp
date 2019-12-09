@@ -1,60 +1,114 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 张焕
-  Date: 2019/11/26
-  Time: 17:18
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page isELIgnored="false" %>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
+  <head>
     <base href="<%=basePath%>">
-    <title>Title</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $("#btnReset").click(function(){
-                $.ajax({
-                    url:"reset",
-                    type:"post",
-                    data:{
-                        "username":$("#username").val(),
-                        "password":$("#password").val(),
-                        "password1":$("#password1").val()
-                    },
-                    success:function(data){
-                        if(data=="inconformity"){
-                            $("#msg").html("两个密码不一致")
-                        }else if(data=="success"){
-                            $("#msg").html("修改成功")
-                        }else if(data=="mismatching"){
-                            $("#msg").html("用户名信息不正确")
-                        }else if(data=="same"){
-                            $("#msg").html("旧密码不能与新密码一致")
-                        }else{
-                            $("#msg").html("不能为空")
-                        }
-                    }
-                })
-            })
-        })
-    </script>
+    <title>忘记密码</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+
+<link rel="stylesheet" href="<%=basePath%>resource/css/login.css" type="text/css" media="all">
+<style>
+
+#msg{
+  display: inline-block;
+    color:#ffffff;
+
+}
+.container{
+	height: 350px;
+}
+
+	#sendmsgDiv{
+		display: inline-block;
+	}
+
+#sendmsg,#updatePwd{
+	width: 140px;
+}
+</style>
 </head>
 <body>
-<div style=" height: 15%; width: 100%;" align="center" >
-    <h3>密码修改</h3>
-<input type="text" id="username" placeholder="用户名"><br/>
-<input type="text" id="password" placeholder="新密码"><br/>
-<input type="text" id="password1" placeholder="确认密码"><br/>
+<h1></h1>
+<div class="container w3layouts agileits">
+  <div class="login w3layouts agileits">
+    <h2>忘记密码</h2>
+      <input type="text"      id="username"  placeholder="输入用户名" >
+     <div class="send-button w3layouts agileits" id="sendmsgDiv">    
+        <input type="button" value="发送验证码" id="sendmsg">
+     </div>
+      <input type="text"      id="code"  placeholder="输入验证码" >
+      <input type="password"  id="password" placeholder="输入新密码"  >
+    <div class="send-button w3layouts agileits">    
+        <input type="button" value="确定修改" id="updatePwd">
+           <div id="msg"></div>
+    </div>
+  </div>
 </div>
-<div style=" width: 94%;" align="center">
-    <input type="button" value="确认修改" id="btnReset">
-    <div id="msg"></div>
+<div class="footer w3layouts agileits">
+  <p id="copy">Copyright &copy; More Templates</p>
 </div>
+<script type="text/javascript">
+$(function(){
+    window.randNum;
+ $("#sendmsg").click(function () {
+    if($("#username").val()==''){
+       $("#msg").html("用户名不能为空");
+       return;
+    }else{
+       $.ajax({
+            url:"getUser",
+            type:"post",
+            data:{
+            "username":$("#username").val()
+            },
+            success:function(data){
+                if(isNaN(data)){
+                    $("#msg").html("用户名不存在");
+                }else{
+                    $("#msg").html("验证码已发送");
+                    randNum=data;
+                }
+            }
+       });
+    }
+ });
+    $("#updatePwd").click(function () {
+        if($("#username").val()==''||$("#code").val()==''||$("#password").val()==''){
+            $("#msg").html("验证码或密码不能为空");
+            return;
+        }else{
+            $.ajax({
+                url:"updatePWD",
+                type:"post",
+                data:{
+                    "username":$("#username").val(),
+                    "password":$("#password").val(),
+                    "code":$("#code").val(),
+                    "randNum":randNum
+                },
+                success:function(data){
+                    if(data=='success'){
+                        $("#msg").html("密码修改成功");
+                    }else if(data=='same'){
+                        $("#msg").html("旧密码不能与新密码相同");
+                    }else if(data=='inconformity'){
+                        $("#msg").html("验证码错误");
+                    }else{
+                        $("#msg").html("密码修改失败");
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
 </body>
 </html>

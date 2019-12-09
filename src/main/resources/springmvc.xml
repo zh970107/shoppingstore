@@ -12,21 +12,45 @@
 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+    <!--注解扫描 在xml配置了这个标签后，spring可以自动去扫描base-pack下面所有的类，如果扫描到有@Component @Controller @Service等这些注解的类，则把这些类注册为bean -->
+    <!--开启扫描, 就是逗号就是扫描多个-->
+    <context:component-scan base-package="controller,aspect,serviceImpl"/>
+    <!--开启注解驱动-->
+    <!--1、会自动注册RequestMappingHandlerMapping、RequestMappingHandlerAdapter、ExceptionHandlerExceptionResolver三个bean支持使用了像@RquestMapping、ExceptionHandler等等的注解的controller 方法去处理请求。
+   2、支持使用了ConversionService]的实例对表单参数进行类型转换。3、支持使用@NumberFormat、@NumberFormat注解对数据类型进行格式化。4、支持使用@Valid对javaBean进行JSR-303验证。5、支持使用@RequestBody、@ResponseBody。-->
+    <mvc:annotation-driven />
 
-    <context:component-scan base-package="controller,serviceImpl"/>
+    <!--对静态资源不进行处理，例如js,css,jpg等等 -->
+    <mvc:default-servlet-handler />
 
-    <mvc:default-servlet-handler/>
+    <!-- 启动AspectJ自动代理 -->
+    <!--事务,在也属于aop的体现.就是moidfy,就是是不能体现的,也就是会报异常可以尝试一下就是会报错误，在用到是失误的时候记得把他开启-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <mvc:annotation-driven/>
-
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          id="internalResourceViewResolver">
-
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- 前缀 -->
         <property name="prefix" value="/WEB-INF/jsp/" />
         <!-- 后缀 -->
         <property name="suffix" value=".jsp" />
     </bean>
 
-
+    <!--及aop-xml里指明切面-->
+    <bean id="myAs" class="aspect.OrderAspect"></bean>
+    <!--aop:config标签用来配置有关切面的配置  -->
+    <aop:config>
+        <!-- 设置切点表达式 以便下面引用 -->
+        <aop:pointcut expression="execution(* controller.ShopCarController.deleteProductNum(..))" id="cut"/>
+        <!-- 配置切面所用的bean 和优先级 -->
+        <aop:aspect ref="myAs" order="2" >
+            <!-- 配置切面方法 -->
+            <aop:before method="beforeCheck" pointcut-ref="cut"/>
+            <aop:after method="afterCheck"  pointcut-ref="cut"/>
+            <aop:after-returning method="afterReturn" pointcut-ref="cut" returning="res"/>
+            <aop:after-throwing method="afterThrow" pointcut-ref="cut" throwing="ex"/>
+            <aop:around method="around" pointcut-ref="cut"/>
+        </aop:aspect>
+    </aop:config>
+    <!--将/WEB-INF/static/目录映射为/ resource /目录，**为了访问私有资源。所以在WEB-INF下的jsp文件夹的jsp文
+    就是如果就是直接访问我阿布的页面的是不需要这个资源,需要把它注释掉-->
+    <!--<mvc:resources location="/WEB-INF/resource/"  mapping="/resource/**"  />-->
 </beans>

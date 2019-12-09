@@ -7,6 +7,10 @@ public interface UserService {
 
     Userinfo selectByUsername(String username);
 
+    String selectEmailByusername(String username);
+
+    int selectUidByusername(String username);
+
     int deleteByPrimaryKey(Integer uId);
 
     int insert(Userinfo record);

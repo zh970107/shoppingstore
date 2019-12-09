@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/resetcar.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/carts.css">
+    <link rel="stylesheet" href="<%=basePath%>resource/css/search.css">
 
 
     <style>
@@ -117,8 +118,11 @@
 
 
     </style>
+
 </head>
 <body>
+
+
 <section class="cartMain">
 
     <div class="cartMain_hd">
@@ -203,7 +207,7 @@
                         "                    <label for=\"checkbox_2\"  pid='"+data[i].pId+"' pnum='"+data[i].pNum+"'></label>\n" +
                         "                </li>\n" +
                         "                <li class=\"list_con\">\n" +
-                        "                    <div class=\"list_img\"><a href=\"javascript:;\"><img src='<%=basePath%>"+data[i].pic+"' alt=\"\"></a></div>\n" +
+                        "                    <div class=\"list_img\"><a href=\"javascript:;\"><img src='<%=basePath%>resource/images/"+data[i].pic+"' alt=\"\"></a></div>\n" +
                         "                    <div class=\"list_text\"><a href=\"javascript:;\">"+data[i].pName+"</a></div>\n" +
                         "                </li>" +
                         "                <li class=\"list_info\">" +
@@ -215,7 +219,7 @@
                         "                <li class=\"list_amount\">" +
                         "                    <div class=\"amount_box\">" +
                         "                        <a href='javascript:;' class='reduce reSty' pid='"+data[i].pId+"'>-</a>" +
-                        "                        <input type='text' value='"+data[i].pNum+"' class='sum'  pid='"+data[i].pId+"'>" +
+                        "                        <input type='text' value='"+data[i].pNum+"' class='sum'  pid='"+data[i].pId+"' id=\"numText\"  value = '' onkeyup=\"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else if(this.value.length==0){this.value=1}else{this.value=this.value.replace(/\\D/g,'')}\" onafterpaste=\"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\\D/g,'')}\"  onfocusout=changeValue()>" +
                         "                        <a href='javascript:;' class='plus' pid='"+data[i].pId+"'>+</a>" +
                         "                    </div>" +
                         "                </li>" +
@@ -335,34 +339,32 @@
                 });
             });
 
-        $(".order_content").on("keyup",".sum",function(){
-            if($(this).val()<=0){
-                alert("该宝贝不能再少了哦!")
-            }else{
-                $.ajax({
-                    url:"update",
-                    type:"post",
-                    data:{
-                        "pnum":$(this).val(),
-                        "username":getCookie("username"),
-                        "pid":$(this).attr("pid")
-                    }
-                });
-            }
+        $(".order_content").on("focusout",".sum",function(){
+            $.ajax({
+                url:"update",
+                type:"post",
+                data:{
+                    "pnum":$(this).val(),
+                    "username":getCookie("username"),
+                    "pid":$(this).attr("pid")
+                }
+            });
         })
 
 
         $(".cartBox").on("click",".delBtn",function(){
-            $(this).parent().parent().parent().remove();
-            $.ajax({
-                url:"removeItems",
-                type:"post",
-                data:{
-                    "pid":$(this).attr("pid"),
-                    "username":"${cookie.username.value}"
-                }
-
-            })
+            var flag = confirm("确认要移除吗?")
+            if(flag){
+                $(this).parent().parent().parent().remove();
+                $.ajax({
+                    url:"removeItems",
+                    type:"post",
+                    data:{
+                        "pid":$(this).attr("pid"),
+                        "username":"${cookie.username.value}"
+                    }
+                })
+            }
         });
 
 
@@ -384,7 +386,6 @@
         $("#closeImg").click(function(){
             $("#big").hide();
             $("#MyDiv").hide();
-
         })
 
 
@@ -398,15 +399,13 @@
                 },
                 success:function(data){
                     checkCode=data;
-
-
                 }
             })
         })
 
 
         $("#surePay").click(function () {
-            // if($("#code").val()==checkCode){
+            if($("#code").val()==checkCode){
             $("#big").hide();
             $("#MyDiv").hide();
 
@@ -420,40 +419,39 @@
                 $(".calBtn1").removeClass("payDiv");
                 $(".calBtn1").css("background","#E5E5E5");
 
-                $.ajax({
-                    url:"removeItems",
-                    type:"post",
-                    data:{
-                        "username":getCookie("username"),
-                        "pid":labels.eq(i).attr("pid")
-                    }
 
-                });
-
-
-                $.ajax({
-                    url:"deleteProductNum",
-                    type:"post",
-                    data:{
-                        "username":getCookie("username"),
-                        "pid":labels.eq(i).attr("pid"),
-                        "pnum":labels.eq(i).attr("pnum")
-                    }
-
-                });
+                    $.ajax({
+                        url:"removeItems",
+                        type:"post",
+                        data:{
+                            "username":getCookie("username"),
+                            "pid":labels.eq(i).attr("pid")
+                        }
+                    });
 
 
-
-
-
+                    $.ajax({
+                        url:"deleteProductNum",
+                        type:"post",
+                        data:{
+                            "username":getCookie("username"),
+                            "pid":labels.eq(i).attr("pid"),
+                            "pnum":labels.eq(i).attr("pnum"),
+                            "code":$("#code").val()
+                        },
+                        success:function(data){
+                            if(data=="yes"){
+                                alert("成功")
+                            }else if(data=="no"){
+                                alert("库存不足")
+                            }
+                        }
+                    });
+                }
+            }else{
+                alert("验证码不正确")
             }
-
-            // }
         })
-
-
-
-
     });
 
 
@@ -517,7 +515,15 @@
         }
         return null;
     }
-</script>
 
+    function changeValue(){
+        var str =document.getElementById("numText").value;
+        if(str.charAt('0')==0){//这个开始是0还是1来着 我忘记了 你试试吧
+            str=str.substring(1,str.length);
+    }
+        document.getElementById("numText").value=str;
+    }
+
+</script>
 </body>
 </html>

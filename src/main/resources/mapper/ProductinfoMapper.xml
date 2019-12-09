@@ -16,7 +16,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     P_ID, P_CODE, P_NAME, P_TYPE, BRAND, PIC, P_NUM, PRICE, SALE, INTRO, STATUS
-  </sql>
+</sql>
 
 <select id="selectAllP_type" resultType="java.lang.String">
       select distinct p_type from productinfo
@@ -32,6 +32,8 @@
     from PRODUCTINFO
     where P_ID = #{pId,jdbcType=DECIMAL}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from PRODUCTINFO
     where P_ID = #{pId,jdbcType=DECIMAL}

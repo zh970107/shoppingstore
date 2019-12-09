@@ -11,6 +11,8 @@
   <sql id="Base_Column_List" >
     O_ID, USERID, STATUS, ORDERTIME, PID
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -22,12 +24,22 @@
     where O_ID = #{oId,jdbcType=DECIMAL}
   </delete>
   <insert id="insert" parameterType="entity.Orderinfo" >
+
+    <selectKey keyProperty="oId" order="BEFORE" resultType="int">
+      select seq_orderinfo_o_id.nextval from dual
+    </selectKey>
+
     insert into ORDERINFO (O_ID, USERID, STATUS, 
       ORDERTIME, PID)
     values (#{oId,jdbcType=DECIMAL}, #{userid,jdbcType=DECIMAL}, #{status,jdbcType=DECIMAL}, 
       #{ordertime,jdbcType=VARCHAR}, #{pid,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="entity.Orderinfo" >
+
+    <selectKey keyProperty="uId" order="BEFORE" resultType="int">
+      select seq_orderinfo_o_id.nextval from dual
+    </selectKey>
+
     insert into ORDERINFO
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="oId != null" >

@@ -1004,6 +1004,7 @@ body .center .pieces .line {
   position: absolute;
   opacity: 0;
 }
+
 body .center .pieces .future_ui__piece {
   border: 3px solid #DE0B46;
   position: absolute;

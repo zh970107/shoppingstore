@@ -10,8 +10,12 @@
     <base href="<%=basePath%>">
     <title>商城主页</title>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/style.css">
+    <link rel="stylesheet" href="<%=basePath%>resource/css/search.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
    <style>
@@ -30,12 +34,14 @@
            position: fixed;
            right:10px;
            bottom:200px;
+           background-color: white;
        }
        #carImg{
            display: none;
            position: fixed;
            right:10px;
            bottom:250px;
+           background-color: white;
        }
 
    </style>
@@ -43,7 +49,9 @@
 </head>
 <body>
 <div class='intro'>
+
     <div class='center'>
+
         <div class='core'></div>
         <div class='outer_one'>
             <div class='outer_one__piece'></div>
@@ -338,6 +346,11 @@ function getQueryString(name){
 }
 
 </script>
-
+<div class="search d1">
+    <form>
+        <input type="text" placeholder="搜索从这里开始...">
+        <button type="submit"></button>
+    </form>
+</div>
 </body>
 </html>

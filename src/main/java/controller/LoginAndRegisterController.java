@@ -30,12 +30,12 @@ public class LoginAndRegisterController {
             if(DigestUtils.md5Hex(password.getBytes()).equals(ui.getPassword())){
                 Cookie cookie = new Cookie("username",username);
                 Cookie cookie1 = new Cookie("password",password);
-                cookie.setMaxAge(50000);
-                cookie1.setMaxAge(50000);
+                cookie.setMaxAge(60*60*24*7);
+                cookie1.setMaxAge(60*60*24*7);
 
                 if(flag.equals("yes")){
                     Cookie cookie3 = new Cookie("flag","no");
-                    cookie3.setMaxAge(50000);
+                    cookie3.setMaxAge(60*60*24*7);
                     resp.addCookie(cookie3);
                 }else{
                     Cookie cookie4 = new Cookie("flag","yes");
@@ -73,10 +73,10 @@ public class LoginAndRegisterController {
         }
     }
 
-    @RequestMapping("reset")
-    public String reset(@RequestParam String username,@RequestParam String password,@RequestParam String password1){
-        if(username!=""&&password!=""&&password1!=""){
-            if(!password.equals(password1)){
+    @RequestMapping("updatePWD")
+    public String reset(@RequestParam String username,@RequestParam String password,@RequestParam String code,@RequestParam String randNum){
+        if(username!=""&&password!=""&&code!=""&&randNum!=""){
+            if(!code.equals(randNum)){
                 return "inconformity";
             }else{
                 Userinfo userinfo = usi.selectByUsername(username);
