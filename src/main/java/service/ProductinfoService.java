@@ -8,7 +8,9 @@ public interface ProductinfoService {
 
     List<String> selectAllP_type();
 
-    List<Productinfo> selectAllProductsByP_type(String p_type);
+    List<Productinfo> selectAllProductsByP_type(String p_type,Integer page);
+
+    List<Productinfo> selectAllProductsByPtype(String p_type);
 
     int deleteByPrimaryKey(Integer pId);
 

@@ -13,6 +13,7 @@
     <result column="SALE" property="sale" jdbcType="DECIMAL" />
     <result column="INTRO" property="intro" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="PAGE" property="page" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
     P_ID, P_CODE, P_NAME, P_TYPE, BRAND, PIC, P_NUM, PRICE, SALE, INTRO, STATUS
@@ -22,8 +23,19 @@
       select distinct p_type from productinfo
 </select>
 
-  <select id="selectAllProductsByP_type" resultMap="BaseResultMap" >
+  <!--<select id="selectAllProductsByP_type" resultMap="BaseResultMap" >-->
+    <!--select <include refid="Base_Column_List"/> from productinfo where p_type = #{p_type,jdbcType=VARCHAR}-->
+  <!--</select>-->
+
+  <select id="selectAllProductsByPtype" resultMap="BaseResultMap" >
     select <include refid="Base_Column_List"/> from productinfo where p_type = #{p_type,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAllProductsByP_type" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from(
+      select t.<include refid="Base_Column_List"/>,rownum rn from (
+      select <include refid="Base_Column_List"/> from productinfo where p_type=#{p_type,jdbcType=VARCHAR}) t where rownum&lt;=#{page,jdbcType=DECIMAL}*3)
+      where rn>=(#{page,jdbcType=DECIMAL}-1)*3+1
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -49,6 +61,10 @@
       #{intro,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="entity.Productinfo" >
+
+      <selectKey keyProperty="pId" order="BEFORE" resultType="int">
+          select SEQ_productinfo_p_ID.nextval from dual
+      </selectKey>
     insert into PRODUCTINFO
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pId != null" >

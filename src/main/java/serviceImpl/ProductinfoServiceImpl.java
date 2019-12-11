@@ -20,9 +20,15 @@ public class ProductinfoServiceImpl implements ProductinfoService {
     }
 
     @Override
-    public List<Productinfo> selectAllProductsByP_type(String p_type) {
-        return pim.selectAllProductsByP_type(p_type);
+    public List<Productinfo> selectAllProductsByP_type(String p_type,Integer page) {
+        return pim.selectAllProductsByP_type(p_type,page);
     }
+
+    @Override
+    public List<Productinfo> selectAllProductsByPtype(String p_type) {
+        return pim.selectAllProductsByPtype(p_type);
+    }
+
 
     @Override
     public int deleteByPrimaryKey(Integer pId) {

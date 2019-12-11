@@ -66,7 +66,39 @@ public class ShopCarController {
         }
         return "";
     }
-    
+    @RequestMapping("addCart")
+    public String addCart(@RequestParam String pid,@RequestParam String username,@RequestParam String num){
+
+        //购物车存储结构
+        //Redis的hmset存储:hmset是一个map集合,该集合的key存储username(用户名)
+        //value存储一个map集合,其中这个map集合的key存储pid(商品唯一标识),value存储的是
+        //用户购物车每个商品的数量
+
+        Jedis jedis = jedispool.getResource();//获取jedis对象
+
+        //1.判断用户购物车里面有没有商品,hgetAll通过用户名获取value
+        //1.1如果value不为空,说明有商品,直接添加
+        //1.2如果value为空,那么需要创建一个map集合
+
+        Map<String, String> map = jedis.hgetAll(username);
+
+        if(map.isEmpty()){
+            map = new HashMap<String,String>();
+            map.put(pid,num);
+            jedis.hmset(username,map);//存入jedis中
+        }else{
+            if(map.containsKey(pid)){
+                int i = Integer.parseInt(num);
+                map.put(pid,valueOf(Integer.parseInt(map.get(pid))+i));
+                jedis.hmset(username,map);
+            }else{
+                map.put(pid,num);
+                jedis.hmset(username,map);
+            }
+        }
+        return "";
+    }
+
     @RequestMapping("getCar")
     public List<Productinfo> getCar(@RequestParam String username){
 

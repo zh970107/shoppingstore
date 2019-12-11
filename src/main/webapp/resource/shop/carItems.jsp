@@ -115,13 +115,10 @@
             left:247px;
             top:100px;
         }
-
-
     </style>
 
 </head>
 <body>
-
 
 <section class="cartMain">
 
@@ -142,8 +139,6 @@
         </ul>
     </div>
 
-
-
     <div class="cartBox">
 
         <div class="shop_info">
@@ -151,21 +146,10 @@
                 <!--店铺全选-->
                 <input type="checkbox" id="shop_a" class="shopChoice">
             </div>
-
         </div>
-
         <div class="order_content">
-
-
         </div>
-
-
-
     </div>
-
-
-
-
 
     <!--底部-->
     <div class="bar-wrapper">
@@ -193,6 +177,8 @@
 <script type="text/javascript">
     var flag=true;
     $(function (){
+
+
         $.ajax({
             url:"getCar",
             type:"post",
@@ -207,8 +193,8 @@
                         "                    <label for=\"checkbox_2\"  pid='"+data[i].pId+"' pnum='"+data[i].pNum+"'></label>\n" +
                         "                </li>\n" +
                         "                <li class=\"list_con\">\n" +
-                        "                    <div class=\"list_img\"><a href=\"javascript:;\"><img src='<%=basePath%>resource/images/"+data[i].pic+"' alt=\"\"></a></div>\n" +
-                        "                    <div class=\"list_text\"><a href=\"javascript:;\">"+data[i].pName+"</a></div>\n" +
+                        "                    <div class=\"list_img\"><a href=\"<%=basePath%>resource/shop/productdetail.jsp?pid="+data[i].pId+"\" target=\"_blank\"><img src='<%=basePath%>resource/images/"+data[i].pic+"' alt=\"\"></a></div>\n" +
+                        "                    <div class=\"list_text\"><a href=\"<%=basePath%>resource/shop/productdetail.jsp?pid="+data[i].pId+"\" target=\"_blank\">"+data[i].pName+"</a></div>" +
                         "                </li>" +
                         "                <li class=\"list_info\">" +
                         "                    <p>"+data[i].intro+"</p>" +
@@ -234,7 +220,6 @@
                     $(".order_content").append(ul);
 
                 }
-
 
                 $("section").on("click","label",function (){
 
@@ -367,27 +352,18 @@
             }
         });
 
-
-
-
-
-
-
         $(".calBtn1").click(function(){
             if($("label[class='mark']").length>=1){
                 $("#big").show();
                 $("#MyDiv").show();
                 $("#code").val('');
             }
-
         });
-
 
         $("#closeImg").click(function(){
             $("#big").hide();
             $("#MyDiv").hide();
         })
-
 
         var checkCode;
         $("#sendMail").click(function () {
@@ -403,8 +379,8 @@
             })
         })
 
-
         $("#surePay").click(function () {
+
             if($("#code").val()==checkCode){
             $("#big").hide();
             $("#MyDiv").hide();
@@ -419,17 +395,6 @@
                 $(".calBtn1").removeClass("payDiv");
                 $(".calBtn1").css("background","#E5E5E5");
 
-
-                    $.ajax({
-                        url:"removeItems",
-                        type:"post",
-                        data:{
-                            "username":getCookie("username"),
-                            "pid":labels.eq(i).attr("pid")
-                        }
-                    });
-
-
                     $.ajax({
                         url:"deleteProductNum",
                         type:"post",
@@ -442,6 +407,14 @@
                         success:function(data){
                             if(data=="yes"){
                                 alert("成功")
+                                $.ajax({
+                                    url:"removeItems",
+                                    type:"post",
+                                    data:{
+                                        "username":getCookie("username"),
+                                        "pid":labels.eq(i).attr("pid")
+                                    }
+                                });
                             }else if(data=="no"){
                                 alert("库存不足")
                             }
@@ -492,7 +465,6 @@
         }else{
             $(".calBtn1").removeClass("payDiv");
             $(".calBtn1").css("background","#E5E5E5");
-
         }
     }
 
@@ -515,15 +487,6 @@
         }
         return null;
     }
-
-    function changeValue(){
-        var str =document.getElementById("numText").value;
-        if(str.charAt('0')==0){//这个开始是0还是1来着 我忘记了 你试试吧
-            str=str.substring(1,str.length);
-    }
-        document.getElementById("numText").value=str;
-    }
-
 </script>
 </body>
 </html>

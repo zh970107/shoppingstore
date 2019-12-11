@@ -34,6 +34,18 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
+
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+           <!--/*表示拦截所有请求,如果想拦截以某个名字(abc)结尾的请求path里写/*/abc,如果想拦截以某个名字(abc)开头的请求,path里写/abc/*-->
+            <mvc:mapping path="/selectAllP_type" />
+            <bean id="commonInterceptor2" class="interceptor.MyInterception "></bean> <!--这个类就是我们自定义的Interceptor-->
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
     <!--及aop-xml里指明切面-->
     <bean id="myAs" class="aspect.OrderAspect"></bean>
     <!--aop:config标签用来配置有关切面的配置  -->
@@ -53,4 +65,16 @@
     <!--将/WEB-INF/static/目录映射为/ resource /目录，**为了访问私有资源。所以在WEB-INF下的jsp文件夹的jsp文
     就是如果就是直接访问我阿布的页面的是不需要这个资源,需要把它注释掉-->
     <!--<mvc:resources location="/WEB-INF/resource/"  mapping="/resource/**"  />-->
+
+
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8" />
+        <!-- 指定所上传文件的总大小,单位字节。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+        <property name="maxUploadSize" value="10240000" />
+        <property name="resolveLazily" value="true"/>
+
+    </bean>
+
 </beans>
