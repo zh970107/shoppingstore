@@ -70,10 +70,8 @@ public class OrderAspect {
             odsi.insert(od);
         }
 
-
         Signature sig=joinPoint.getSignature();
         System.out.println("After at "+sig.getName()+"return. res= "+res);
-
     }
 
 

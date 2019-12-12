@@ -104,8 +104,10 @@
                             var str;
                             if(data[i].status==0){
                                 str = "未上架"
-                            }else{
+                            }else if(data[i].status==1){
                                 str = "已上架"
+                            }else{
+                                str = "未知状态"
                             }
 
                             var str1="<tr width=\"10px\" height=\"1px\"><td class=\"td\">"+data[i].pName+"</td>" +
