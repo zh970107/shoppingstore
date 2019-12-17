@@ -23,7 +23,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+ <%--   <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>--%>
 </head>
 <body style="height: 100%; margin: 0">
 <div id="container" style="height: 100%"></div>
@@ -45,13 +45,11 @@
                 }
                 var dom = document.getElementById("container");
                 var myChart = echarts.init(dom);
-                var app = {};
                 option = null;
                 option = {
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
-
                         data: datax,
                     },
                     yAxis: {

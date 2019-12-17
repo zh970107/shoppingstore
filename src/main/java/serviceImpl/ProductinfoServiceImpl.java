@@ -15,6 +15,11 @@ public class ProductinfoServiceImpl implements ProductinfoService {
     ProductinfoMapper pim;
 
     @Override
+    public List<Productinfo> fuzzyquery(String name) {
+        return pim.fuzzyquery(name);
+    }
+
+    @Override
     public List<String> selectAllP_type() {
         return pim.selectAllP_type();
     }

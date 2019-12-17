@@ -6,11 +6,8 @@ public class Productinfo {
     private Integer pCode;
 
     private String pName;
-
     private String pType;
-
     private String brand;
-
     private String pic;
 
     private Integer pNum;

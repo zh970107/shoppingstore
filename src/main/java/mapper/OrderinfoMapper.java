@@ -2,7 +2,12 @@ package mapper;
 
 import entity.Orderinfo;
 
+import java.util.List;
+
 public interface OrderinfoMapper {
+    List<Orderinfo> selectAllUndeliverOrders();
+
+    List<Orderinfo> selectAlldeliverOrders();
 
     int deleteByPrimaryKey(Integer oId);
 

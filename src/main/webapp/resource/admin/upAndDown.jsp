@@ -14,7 +14,7 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <title>Title</title>
+    <title>上下架商品</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <style type="text/css">
         .td{

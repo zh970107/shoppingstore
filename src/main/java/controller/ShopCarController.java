@@ -35,6 +35,8 @@ public class ShopCarController {
     @Autowired
     ProductinfoServiceImpl psi;
 
+
+    //从商品列中添加商品至购物车
     @RequestMapping("addCar")
     public String addcar(@RequestParam String pid,@RequestParam String username){
 
@@ -50,7 +52,6 @@ public class ShopCarController {
         //1.2如果value为空,那么需要创建一个map集合
 
         Map<String, String> map = jedis.hgetAll(username);
-
         if(map.isEmpty()){
             map = new HashMap<String,String>();
             map.put(pid,"1");
@@ -66,6 +67,9 @@ public class ShopCarController {
         }
         return "";
     }
+
+
+    //从商品详情添加至购物车
     @RequestMapping("addCart")
     public String addCart(@RequestParam String pid,@RequestParam String username,@RequestParam String num){
 
@@ -99,6 +103,7 @@ public class ShopCarController {
         return "";
     }
 
+    //获取购物车中的商品
     @RequestMapping("getCar")
     public List<Productinfo> getCar(@RequestParam String username){
 
@@ -116,10 +121,9 @@ public class ShopCarController {
         return list;
     }
 
-
+    //删除购物车的商品
     @RequestMapping("removeItems")
     public void removeItems(@RequestParam String pid,@RequestParam String username){
-
         Jedis jedis = jedispool.getResource();//获取jedis对象
         Map<String, String> map = jedis.hgetAll(username);
         map.remove(pid);
@@ -127,12 +131,12 @@ public class ShopCarController {
         jedis.hmset(username,map);
     }
 
+    //更改购物车的商品数量
     @RequestMapping("reduceItemsNum")
     public void reduceItemsNum(@RequestParam String pnum,@RequestParam String username,@RequestParam String pid){
 
         Jedis jedis = jedispool.getResource();//获取jedis对象
         Map<String, String> map = jedis.hgetAll(username);
-
         if(Integer.parseInt(pnum)>=1){
             map.remove(pid);
             map.put(pid,pnum);
@@ -143,6 +147,7 @@ public class ShopCarController {
         }
     }
 
+    //手动更改购物车中的商品数量
     @RequestMapping("update")
     public void reduce(@RequestParam String pnum,@RequestParam String username,@RequestParam String pid){
         Jedis jedis = jedispool.getResource();//获取jedis对象
@@ -153,30 +158,31 @@ public class ShopCarController {
         jedis.hmset(username,map);
     }
 
-
+    //购买商品后库存减少
     @RequestMapping("deleteProductNum")
     public synchronized String deleteProductNum(@RequestParam String username,@RequestParam Integer pid,@RequestParam Integer pnum){
-
         Productinfo pi = psi.selectByPrimaryKey(pid);
-            if(pi.getpNum()>=pnum){
-                pi.setpNum(pi.getpNum()-pnum);
-                psi.updateByPrimaryKey(pi);
-                return "yes";
-            }else{
-                return "no";
-            }
+        if(pi.getpNum()>=pnum){
+            pi.setpNum(pi.getpNum()-pnum);
+            psi.updateByPrimaryKey(pi);
+            return "yes";
+        }else{
+            return "no";
         }
+    }
 
 
-        @RequestMapping("getUser")
-        public String getUser(@RequestParam String username,HttpServletRequest req, HttpServletResponse resp) throws IOException {
-            Userinfo userinfo = usi.selectByUsername(username);
-            if(userinfo!=null){
-                return getEmail(username,req,resp);
-            }else{
-                return "empty";
-            }
+    //找回密码,邮箱验证
+    @RequestMapping("getUser")
+    public String getUser(@RequestParam String username,HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Userinfo userinfo = usi.selectByUsername(username);
+        if(userinfo!=null){
+            return getEmail(username,req,resp);
+        }else{
+            return "empty";
         }
+    }
+
 
     @RequestMapping("sendEmail")
     public String getEmail(@RequestParam String username,HttpServletRequest req, HttpServletResponse resp) throws IOException {

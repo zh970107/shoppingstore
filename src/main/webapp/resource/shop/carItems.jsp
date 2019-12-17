@@ -406,7 +406,7 @@
                         },
                         success:function(data){
                             if(data=="yes"){
-                                alert("成功")
+                                //alert("成功")
                                 $.ajax({
                                     url:"removeItems",
                                     type:"post",

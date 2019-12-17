@@ -7,9 +7,16 @@
     <result column="AD_PASSWORD" property="adPassword" jdbcType="VARCHAR" />
     <result column="ROLE" property="role" jdbcType="DECIMAL" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     AD_ID, AD_NAME, AD_PASSWORD, ROLE
   </sql>
+
+  <select id="selectByAdminname" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from Admininfo where AD_NAME = #{adName,jdbcType=VARCHAR}
+  </select>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

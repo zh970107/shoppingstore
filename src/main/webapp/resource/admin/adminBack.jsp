@@ -190,25 +190,33 @@
         $('[data-sidenav]').sidenav();
         $("#myframe").attr("src","resource/admin/timesecharts.jsp");
 
-
-
+        /*在线统计人数*/
         $("#topPage").click(function(){
             $("#myframe").attr("src","resource/admin/timesecharts.jsp");
         });
 
-
+        /*添加商品*/
         $("#addPro").click(function(){
             $("#myframe").attr("src","resource/products/addProducts.jsp");
         });
 
-        $("#undeliver").click(function(){
-            $("#myframe").attr("src","resource/admin/unDeliverOrders.jsp");
-
-        });
-
+        /*上下架商品*/
         $("#upanddown").click(function(){
             $("#myframe").attr("src","<%=basePath%>resource/admin/upAndDown.jsp");
         });
+
+        /*代发货*/
+        $("#undeliver").click(function(){
+            $("#myframe").attr("src","resource/admin/shopPending.jsp");
+        });
+
+        /*退货*/
+        $("#backdeliver").click(function(){
+            $("#myframe").attr("src","resource/admin/shipped.jsp");
+
+        });
+
+
     })
 
 </script>

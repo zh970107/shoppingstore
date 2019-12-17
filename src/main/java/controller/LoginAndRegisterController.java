@@ -1,11 +1,13 @@
 package controller;
 
+import entity.Admininfo;
 import entity.Userinfo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import serviceImpl.AdmininfoServiceImpl;
 import serviceImpl.UserServiceImpl;
 
 import javax.servlet.http.Cookie;
@@ -19,6 +21,9 @@ public class LoginAndRegisterController {
 
     @Autowired
     UserServiceImpl usi;
+
+    @Autowired
+    AdmininfoServiceImpl aisi;
 
 
     @RequestMapping("login")
@@ -39,7 +44,7 @@ public class LoginAndRegisterController {
                     resp.addCookie(cookie3);
                 }else{
                     Cookie cookie4 = new Cookie("flag","yes");
-                    cookie4.setMaxAge(50000);
+                    cookie4.setMaxAge(60*60*24*7);
                     resp.addCookie(cookie4);
                 }
                 resp.addCookie(cookie);
@@ -98,6 +103,22 @@ public class LoginAndRegisterController {
             }
         }else{
             return "empty";
+        }
+    }
+
+
+
+    @RequestMapping("adminlogin")
+    public String adminlogin(@RequestParam String username,@RequestParam String password){
+        Admininfo admininfo = aisi.selectByAdminname(username);
+        if(admininfo==null){
+            return "empty";
+        }else{
+            if(admininfo.getAdPassword().equals(DigestUtils.md5Hex(password.getBytes()))){
+                return "yes";
+            }else{
+                return "no";
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ProductinfoService {
 
+    List<Productinfo> fuzzyquery(String name);
+
     List<String> selectAllP_type();
 
     List<Productinfo> selectAllProductsByP_type(String p_type,Integer page);

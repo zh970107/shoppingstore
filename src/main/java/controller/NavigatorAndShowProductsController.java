@@ -20,16 +20,19 @@ public class NavigatorAndShowProductsController {
     @Autowired
     WebInfoServiceImpl wsi;
 
+    //获取所有的商品
     @RequestMapping("selectAllP_type")
     public List<String> selectAllP_type(){
         return psi.selectAllP_type();
     }
 
+    //分页查询
     @RequestMapping("selectAllProductsByP_type")
     public List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type, @RequestParam Integer page){
         return psi.selectAllProductsByP_type(p_type,page);
     }
 
+    //获取当前分类有多少条数据
     @RequestMapping("selectAllProductsByPtype")
     public int selectAllProductsByPtype(@RequestParam String p_type){
         List<Productinfo> list = psi.selectAllProductsByPtype(p_type);
@@ -37,6 +40,7 @@ public class NavigatorAndShowProductsController {
         return size;
     }
 
+    //
     @RequestMapping("selectAllProductsPtype")
     public List<Productinfo> selectAllProductsPtype(@RequestParam String p_type){
         return psi.selectAllProductsByPtype(p_type);
@@ -47,10 +51,6 @@ public class NavigatorAndShowProductsController {
     public Productinfo getproductinfo(@RequestParam Integer pId){
         return psi.selectByPrimaryKey(pId);
     }
-
-
-
-
 
     //获取
     @RequestMapping("getWebData")

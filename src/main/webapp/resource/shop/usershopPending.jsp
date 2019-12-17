@@ -14,12 +14,12 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <title>Title</title>
+    <title>用户未发货</title>
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 </head>
 <body>
 <div>
-    <h3>商家未发货管理后台页面</h3>
+    <h3>用户管理页面</h3>
     <table id="ta" border="2">
         <tr>
             <th>商品品牌</th>
@@ -31,10 +31,8 @@
             <th>订单编号</th>
             <th>商品状态</th>
             <th>下单时间</th>
-            <th>购买用户</th>
             <th>商品介绍</th>
             <th>操作</th>
-            <th></th>
         </tr>
     </table>
 </div>
@@ -45,6 +43,7 @@
             type:"post",
             success:function(data){
                 for(var i=0;i<data.length;i++){
+
                     var str="<tr>" +
                         "            <td>"+data[i].brand+"</td>" +//商品品牌
                         "            <td>"+data[i].pName+"</td>" +//商品名
@@ -55,35 +54,12 @@
                         "            <td>"+data[i].odId+"</td>" +//订单编号
                         "            <td>未发货</td>" +//商品状态
                         "            <td>"+data[i].ordertime+"</td>" +//下单时间
-                        "            <td>${cookie.username.value}</td>" +//下单时间
                         "            <td>"+data[i].intro+"</td>" +//介绍
-                        "            <td><button class=\"btn\" pid="+data[i].oId+">发货</button></td>" +
-                        "            <td>退款</td>" +
+                        "            <td><button class=\"btn\" pid="+data[i].oId+">退款</button></td>" +
                         "        </tr>"
                     $("#ta").append(str);
                 }
             }
-        })
-
-
-        $("#ta").on("click",".btn",function(){
-            var oid = $(this).attr("pid");
-            //alert(oid)
-            $.ajax({
-                url:"shipments",
-                type:"post",
-                data:{
-                    "oid":oid
-                },
-                success:function(data){
-                    if(data>0){
-                        //alert("成功")
-                        window.location.reload();//刷新当前页面.
-                    }else{
-                        alert("成功")
-                    }
-                }
-            })
         })
     })
 </script>

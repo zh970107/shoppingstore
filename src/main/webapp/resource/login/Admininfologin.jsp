@@ -36,7 +36,28 @@
 </div>
 
 <script type="text/javascript">
-
+        $(function(){
+            $("#btnLogin").click(function(){
+                $.ajax({
+                    url:"adminlogin",
+                    type:"post",
+                    data:{
+                        "username":$("#username1").val(),
+                        "password":$("#password1").val()
+                    },
+                    success:function(data){
+                        if(data=="empty"){
+                            $("#msg").html("用户不存在")
+                        }else if(data=="yes"){
+                            $("#msg").html("成功")
+                            window.location="<%=basePath%>resource/admin/adminBack.jsp"
+                        }else{
+                            $("#msg").html("密码错误")
+                        }
+                    }
+                })
+            })
+        })
 </script>
 </body>
 </html>

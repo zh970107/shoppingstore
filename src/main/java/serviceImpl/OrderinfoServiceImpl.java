@@ -6,11 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.OrderinfoService;
 
+import java.util.List;
+
 @Service
 public class OrderinfoServiceImpl  implements OrderinfoService {
 
     @Autowired
     OrderinfoMapper oim;
+
+
+    @Override
+    public List<Orderinfo> selectAllUndeliverOrders() {
+        return oim.selectAllUndeliverOrders();
+    }
+
+    @Override
+    public List<Orderinfo> selectAlldeliverOrders() {
+        return oim.selectAlldeliverOrders();
+    }
 
     @Override
     public int deleteByPrimaryKey(Integer oId) {

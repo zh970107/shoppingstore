@@ -36,12 +36,23 @@
            bottom:200px;
            background-color: white;
        }
+
        #carImg{
            display: none;
            position: fixed;
            right:10px;
            bottom:250px;
            background-color: white;
+       }
+
+       #userImg{
+           display: none;
+           position: fixed;
+           left:10px;
+           bottom:700px;
+           background-color: white;
+           height: 30px;
+           width: 30px;
        }
 
    </style>
@@ -292,8 +303,10 @@
 <iframe  id="myframe"></iframe>
 <img src="<%=basePath%>resource/images/top.png" id="topImg"/>
 <img src="<%=basePath%>resource/images/cart.png" id="carImg"/>
+<img src="<%=basePath%>resource/images/user.png" id="userImg"/>
 <script>
 $(function(){
+    $("#userImg").show();
 /*一进页面就发请求查询所有的类别*/
    $.ajax({
       url:"selectAllP_type",
@@ -329,14 +342,22 @@ $(function(){
        $("#myframe").show();
        $("#topImg").show();
        $("#carImg").show();
+       $("#userImg").hide();
    });
+
 
    $("#topImg").click(function(){
        $(".intro").show();
        $("#myframe").hide(1000);
        $("#topImg").hide();
        $("#carImg").hide();
+       $("#userImg").hide();
    });
+
+   $("#userImg").click(function(){
+       window.open("<%=basePath%>resource/shop/onlyPeople.jsp")
+   });
+
    $("#carImg").click(function(){
 
        var username ="${cookie.username.value}";
@@ -355,12 +376,13 @@ function getQueryString(name){
         return  decodeURI(r[2]);
     return null;
 }
-
 </script>
+
+
 <div class="search d1">
-    <form>
-        <input type="text" placeholder="搜索从这里开始...">
-        <button type="submit"></button>
+    <form action="<%=basePath%>fuzzyquery">
+        <input type="text" placeholder="搜索从这里开始..." name="name">
+        <button type="submit" ></button>
     </form>
 </div>
 </body>
